@@ -5,17 +5,17 @@ from importlib.metadata import version, PackageNotFoundError
 
 # Retrieve the version from the package metadata
 try:
-    __version__ = version("coffeetime")
+    __version__ = version("caffeinated")
 except PackageNotFoundError:
     __version__ = "unknown"
 
 @click.command()
-@click.version_option(version=__version__, prog_name="coffeetime")  # Adding the version option
+@click.version_option(version=__version__, prog_name="caffeinated")  # Adding the version option
 @click.option('-c', '--caffeine', type=int, help='Amount of caffeine ingested in mg.')
 @click.option('-b', '--bedtime', help='Bedtime in 12-hour format (e.g., 9pm) or 24-hour format (e.g., 2100).')
 @click.option('-s', '--start-time', default=None, help='Time you start consuming caffeine in 12-hour format (e.g., 6AM) or 24-hour format (e.g., 0600). Defaults to current system time.')
 @click.pass_context
-def coffeetime(ctx, caffeine, bedtime, start_time):
+def caffeinated(ctx, caffeine, bedtime, start_time):
     """
     Calculate the remaining caffeine in your system at bedtime based on current caffeine intake.
     """
@@ -101,4 +101,4 @@ def calculate_caffeine_level(caffeine_amount, hours_until_bedtime):
     return caffeine_amount * 0.5 ** (hours_until_bedtime / 6)
 
 if __name__ == '__main__':
-    coffeetime()
+    caffeinated()

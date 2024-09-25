@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel", "twine"]
+requires = ["setuptools>=61.0", "wheel", "twine", "build"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "coffeetime"
-version = "0.1.1"
+name = "caffeinated"
+version = "0.1.0"
 description = "Provide statistics about your caffeine level specifically when you'd be going to bed."
 readme = "README.md"
 authors = [{name = "Stephen Turner"}]
@@ -18,13 +18,13 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/stephenturner/coffeetime"
-Changelog = "https://github.com/stephenturner/coffeetime/releases"
-Issues = "https://github.com/stephenturner/coffeetime/issues"
-CI = "https://github.com/stephenturner/coffeetime/actions"
+Homepage = "https://github.com/stephenturner/caffeinated"
+Changelog = "https://github.com/stephenturner/caffeinated/releases"
+Issues = "https://github.com/stephenturner/caffeinated/issues"
+CI = "https://github.com/stephenturner/caffeinated/actions"
 
 [project.scripts]
-coffeetime = "coffeetime.cli:coffeetime"
+caffeinated = "caffeinated.cli:caffeinated"
 
 [project.optional-dependencies]
 test = ["pytest"]

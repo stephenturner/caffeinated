@@ -1,9 +1,9 @@
-# coffeetime
+# caffeinated
 
-[![PyPI](https://img.shields.io/pypi/v/coffeetime.svg)](https://pypi.org/project/coffeetime/)
-[![Changelog](https://img.shields.io/github/v/release/stephenturner/coffeetime?include_prereleases&label=changelog)](https://github.com/stephenturner/coffeetime/releases)
-[![Tests](https://github.com/stephenturner/coffeetime/actions/workflows/test.yml/badge.svg)](https://github.com/stephenturner/coffeetime/actions/workflows/test.yml)
-[![License](https://img.shields.io/badge/license-GPL%203-blue.svg)](https://github.com/stephenturner/coffeetime/blob/master/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/caffeinated.svg)](https://pypi.org/project/caffeinated/)
+[![Changelog](https://img.shields.io/github/v/release/stephenturner/caffeinated?include_prereleases&label=changelog)](https://github.com/stephenturner/caffeinated/releases)
+[![Tests](https://github.com/stephenturner/caffeinated/actions/workflows/test.yml/badge.svg)](https://github.com/stephenturner/caffeinated/actions/workflows/test.yml)
+[![License](https://img.shields.io/badge/license-GPL%203-blue.svg)](https://github.com/stephenturner/caffeinated/blob/master/LICENSE)
 
 Provide statistics about your caffeine level specifically when you'd be going to bed. This package was inspired by [coffee-o-clock](https://github.com/Eliya-G/coffee-o-clock).
 
@@ -25,20 +25,20 @@ Where:
 Install this tool using `pip`:
 
 ```bash
-pip install coffeetime
+pip install caffeinated
 ```
 ## Usage
 
 For help, run:
 
 ```bash
-coffeetime --help
+caffeinated --help
 ```
 
 Example usage:
 
 ```bash
-coffeetime --caffeine 200 --bedtime 9pm
+caffeinated --caffeine 200 --bedtime 9pm
 ```
 
 ```
@@ -49,7 +49,7 @@ That's like having 56% of a cup of coffee before bed.
 You can also specify the time you're starting to consume caffeine. Both bedtime and start time can be specified in 12-hour or 24-hour format.
 
 ```bash
-coffeetime --caffeine 200 --bedtime 2100 --start-time 0600
+caffeinated --caffeine 200 --bedtime 2100 --start-time 0600
 ```
 
 ```
@@ -62,7 +62,7 @@ That's like having 39% of a cup of coffee before bed.
 To contribute to this tool, first checkout the code. Then create a new virtual environment:
 
 ```bash
-cd coffeetime
+cd caffeinated
 python -m venv venv
 source venv/bin/activate
 ```
