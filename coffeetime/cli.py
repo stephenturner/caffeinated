@@ -7,13 +7,13 @@ from importlib.metadata import version, PackageNotFoundError
 try:
     __version__ = version("coffeetime")
 except PackageNotFoundError:
-    __version__ = "unknown" 
+    __version__ = "unknown"
 
 @click.command()
 @click.version_option(version=__version__, prog_name="coffeetime")  # Adding the version option
 @click.option('-c', '--caffeine', type=int, help='Amount of caffeine ingested in mg.')
 @click.option('-b', '--bedtime', help='Bedtime in 12-hour format (e.g., 9pm) or 24-hour format (e.g., 2100).')
-@click.option('-s', '--start-time', default=None, help='Time you start consuming caffeine in 12-hour format (e.g., 3PM). Defaults to current system time.')
+@click.option('-s', '--start-time', default=None, help='Time you start consuming caffeine in 12-hour format (e.g., 6AM) or 24-hour format (e.g., 0600). Defaults to current system time.')
 @click.pass_context
 def coffeetime(ctx, caffeine, bedtime, start_time):
     """
@@ -25,19 +25,20 @@ def coffeetime(ctx, caffeine, bedtime, start_time):
         click.echo(ctx.get_help())  
         ctx.exit(1)  
 
-    # Convert and start time bedtime to 24-hour format 
+    # Convert bedtime to 24-hour format
     try:
         bedtime_24hr = convert_to_24_hour(bedtime)
     except ValueError as e:
         click.echo(f"Error: {e}")
         ctx.exit(1)
 
-    # Get the current time in 24-hour format
+    # Convert start_time to 24-hour format if provided
     if start_time:
         try:
-            start_time = datetime.strptime(start_time.upper(), "%I%p").time()
-        except ValueError:
-            click.echo(f"Error: Invalid current time format: {start_time}. Use e.g., 3PM.")
+            start_time_24hr = convert_to_24_hour(start_time)
+            start_time = datetime.strptime(start_time_24hr, "%H%M").time()
+        except ValueError as e:
+            click.echo(f"Error: {e}")
             ctx.exit(1)
     else:
         start_time = datetime.now().time()
@@ -63,34 +64,34 @@ def format_time(time_24hr):
     """
     return datetime.strptime(time_24hr, "%H%M").strftime("%I:%M%p").lstrip("0").lower()
 
-def convert_to_24_hour(bedtime):
+def convert_to_24_hour(time_str):
     """
-    Convert 12-hour format (e.g., 8PM) to 24-hour format (e.g., 2000).
-    If already in 24-hour format (e.g., 2000), return it as is.
+    Convert 12-hour format (e.g., 8PM or 6AM) to 24-hour format (e.g., 2000 or 0600).
+    If already in 24-hour format (e.g., 2000 or 0600), return it as is.
     """
-    bedtime = bedtime.strip().upper()
+    time_str = time_str.strip().upper()
     try:
-        if bedtime[-2:] in ["AM", "PM"]:
+        if time_str[-2:] in ["AM", "PM"]:
             # Convert from 12-hour to 24-hour format
-            return datetime.strptime(bedtime, "%I%p").strftime("%H%M")
-        elif len(bedtime) == 4 and bedtime.isdigit():
+            return datetime.strptime(time_str, "%I%p").strftime("%H%M")
+        elif len(time_str) == 4 and time_str.isdigit():
             # Assume it's already in 24-hour format
-            return bedtime
+            return time_str
         else:
             raise ValueError
     except ValueError:
-        raise ValueError(f"Invalid bedtime format: {bedtime}. Use e.g., 8PM or 2000.")
+        raise ValueError(f"Invalid time format: {time_str}. Use e.g., 8PM, 6AM, or 0600.")
 
 def calculate_hours_until_bedtime(bedtime_24hr, start_time):
     """
-    Calculate the number of hours from the current time until the given bedtime.
+    Calculate the number of hours from the start time until the given bedtime.
     """
-    # Convert bedtime and current time to total hours
+    # Convert bedtime and start time to total hours
     bedtime_hour = int(bedtime_24hr[:2]) + int(bedtime_24hr[2:]) / 60
-    current_hour = start_time.hour + start_time.minute / 60
+    start_hour = start_time.hour + start_time.minute / 60
 
     # Calculate hours until bedtime
-    hours_until_bedtime = (bedtime_hour - current_hour) % 24
+    hours_until_bedtime = (bedtime_hour - start_hour) % 24
     return hours_until_bedtime
 
 def calculate_caffeine_level(caffeine_amount, hours_until_bedtime):
