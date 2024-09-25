@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "caffeinated"
-version = "0.1.0"
+version = "0.1.1"
 description = "Provide statistics about your caffeine level specifically when you'd be going to bed."
 readme = "README.md"
 authors = [{name = "Stephen Turner"}]
