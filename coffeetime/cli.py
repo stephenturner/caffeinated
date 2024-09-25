@@ -1,25 +1,31 @@
 import click
 import math
 from datetime import datetime
+from importlib.metadata import version, PackageNotFoundError
 
-__version__ = "0.1.0"
+# Retrieve the version from the package metadata
+try:
+    __version__ = version("coffeetime")
+except PackageNotFoundError:
+    __version__ = "unknown" 
 
 @click.command()
 @click.version_option(version=__version__, prog_name="coffeetime")  # Adding the version option
 @click.option('-c', '--caffeine', type=int, help='Amount of caffeine ingested in mg.')
 @click.option('-b', '--bedtime', help='Bedtime in 12-hour format (e.g., 9pm) or 24-hour format (e.g., 2100).')
-@click.option('-t', '--current-time', default=None, help='Current time in 12-hour format (e.g., 3PM). Defaults to current system time.')
+@click.option('-s', '--start-time', default=None, help='Time you start consuming caffeine in 12-hour format (e.g., 3PM). Defaults to current system time.')
 @click.pass_context
-def coffeetime(ctx, caffeine, bedtime, current_time):
+def coffeetime(ctx, caffeine, bedtime, start_time):
     """
     Calculate the remaining caffeine in your system at bedtime based on current caffeine intake.
     """
+
     # Check if the required arguments are missing
     if not caffeine or not bedtime:
-        click.echo(ctx.get_help())  # Print the help message
-        ctx.exit(1)  # Exit the program with an error status code
+        click.echo(ctx.get_help())  
+        ctx.exit(1)  
 
-    # Convert bedtime to 24-hour format if necessary
+    # Convert and start time bedtime to 24-hour format 
     try:
         bedtime_24hr = convert_to_24_hour(bedtime)
     except ValueError as e:
@@ -27,18 +33,18 @@ def coffeetime(ctx, caffeine, bedtime, current_time):
         ctx.exit(1)
 
     # Get the current time in 24-hour format
-    if current_time:
+    if start_time:
         try:
-            current_time = datetime.strptime(current_time.upper(), "%I%p").time()
+            start_time = datetime.strptime(start_time.upper(), "%I%p").time()
         except ValueError:
-            click.echo(f"Error: Invalid current time format: {current_time}. Use e.g., 3PM.")
+            click.echo(f"Error: Invalid current time format: {start_time}. Use e.g., 3PM.")
             ctx.exit(1)
     else:
-        current_time = datetime.now().time()
+        start_time = datetime.now().time()
 
     # Calculate the number of hours until bedtime
     try:
-        hours_until_bedtime = calculate_hours_until_bedtime(bedtime_24hr, current_time)
+        hours_until_bedtime = calculate_hours_until_bedtime(bedtime_24hr, start_time)
     except ValueError as e:
         click.echo(f"Error: {e}")
         ctx.exit(1)
@@ -75,13 +81,13 @@ def convert_to_24_hour(bedtime):
     except ValueError:
         raise ValueError(f"Invalid bedtime format: {bedtime}. Use e.g., 8PM or 2000.")
 
-def calculate_hours_until_bedtime(bedtime_24hr, current_time):
+def calculate_hours_until_bedtime(bedtime_24hr, start_time):
     """
     Calculate the number of hours from the current time until the given bedtime.
     """
     # Convert bedtime and current time to total hours
     bedtime_hour = int(bedtime_24hr[:2]) + int(bedtime_24hr[2:]) / 60
-    current_hour = current_time.hour + current_time.minute / 60
+    current_hour = start_time.hour + start_time.minute / 60
 
     # Calculate hours until bedtime
     hours_until_bedtime = (bedtime_hour - current_hour) % 24
