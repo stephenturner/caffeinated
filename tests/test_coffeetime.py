@@ -26,7 +26,7 @@ def test_valid_input():
     result = runner.invoke(coffeetime, ["-c", "90", "-b", "10PM"])
     assert result.exit_code == 0
     assert "You would have" in result.output
-    assert "mg of caffeine in your blood" in result.output
+    assert "mg of caffeine in your system" in result.output
 
 
 def test_missing_caffeine_argument():
