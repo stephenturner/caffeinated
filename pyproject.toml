@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "twine"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "coffeetime"
 version = "0.1.0"
