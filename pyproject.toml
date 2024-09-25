@@ -1,0 +1,26 @@
+[project]
+name = "coffeetime"
+version = "0.1.0"
+description = "Provide statistics about your caffeine level specifically when you'd be going to bed."
+readme = "README.md"
+authors = [{name = "Stephen Turner"}]
+license = {text = "GPL-3.0-or-later"}
+requires-python = ">=3.8"
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+]
+dependencies = [
+    "click"
+]
+
+[project.urls]
+Homepage = "https://github.com/stephenturner/coffeetime"
+Changelog = "https://github.com/stephenturner/coffeetime/releases"
+Issues = "https://github.com/stephenturner/coffeetime/issues"
+CI = "https://github.com/stephenturner/coffeetime/actions"
+
+[project.scripts]
+coffeetime = "coffeetime.cli:coffeetime"
+
+[project.optional-dependencies]
+test = ["pytest"]
